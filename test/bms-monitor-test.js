@@ -1,6 +1,6 @@
 const {expect} = require('chai');
 const sinon = require('sinon');
-const {batteryIsOk} = require('../bms-monitor');
+const {batteryIsOk, warningSettings} = require('../bms-monitor');
 
 describe('BMS monitor', ()=> {
   let consoleSpy;
@@ -12,6 +12,14 @@ describe('BMS monitor', ()=> {
   afterEach(()=>{
     consoleSpy.restore();
   });
+
+  it('does not log warnings when warnings are disabled', () => {
+    warningSettings.temperature = false; 
+    expect(batteryIsOk(1, 70, 0.6)).to.be.true;
+    expect(consoleSpy.called).to.be.false; 
+    warningSettings.temperature = true; 
+  });
+  
 
 
   it('reports ok when all parameters are in range', ()=> {
