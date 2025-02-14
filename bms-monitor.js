@@ -3,17 +3,48 @@ const warningSettings ={
   soc: true,
   chargeRate: true,
 };
-function isOutOfRange(value, min, max, message) {
+
+let language='en';
+
+const messages={
+  en:{
+    tempLow:'Warning: Approaching lower temperature limit',
+    tempHigh:'Warning: Approaching upper temperature limit',
+    socLow:'Warning: Approaching discharge',
+    socHigh: 'Warning: Approaching charge-peak',
+    chargeRateLow:'Warning: Approaching lower chargeRate limit',
+    chargerateHigh:'Warning: Approaching upper chargeRate limit',
+    tempOut:'Temperature is out of range!',
+    socOut:'State of Charge is out of range!',
+    chargeRateOut:'Charge rate is out of range!'
+
+  },
+
+  ge:
+  {
+    tempLow:'Warnung: Untere Temperaturgrenze nähert sich',
+    tempHigh:'Warnung: Die Temperaturobergrenze nähert sich',
+    socLow:'Warnung: Entladung steht kurz bevor',
+    socHigh:'Warnung: Ladespitze naht',
+    chargeRateLow:'Warnung: Untere Laderatengrenze nähert sich',
+    chargerateHigh:'Warnung: Die Obergrenze für die Laderate nähert sich',
+    tempOut:'Die Temperatur liegt außerhalb des zulässigen Bereichs!',
+    socOut:'Der Ladezustand liegt außerhalb des zulässigen Bereichs!',
+    chargeRateOut:'Laderate liegt außerhalb des zulässigen Bereichs!'
+  }
+}
+
+function isOutOfRange(value, min, max, messagekey) {
   if (value < min || value > max) {
-    console.log(message);
+    console.log(messages[language][messagekey]);
     return true;
   }
 
   return false;
 }
-function logWarning(value, limit, tolerance, message) {
+function logWarning(value, limit, tolerance, messagekey) {
   if (value >= limit && value <= limit + tolerance) {
-    console.log(message);
+    console.log(messages[language][messagekey]);
   }
 }
 
@@ -30,24 +61,24 @@ function batteryIsOk(temperature, soc, chargeRate) {
   const chargeRateTolerance=0.04;
 
   checkingWarnings(temperature, 0, 45, tempTolerance,
-      'Warning: Approaching lower temperature limit',
-      'Warning: Approaching upper temperature limit',
+      'tempLow',
+      'temphigh',
       warningSettings.temperature);
 
   checkingWarnings(soc, 20, 80, socTolerance,
-      'Warning: Approaching discharge',
-      'Warning: Approaching charge-peak',
+      'socLow',
+      'socHigh',
       warningSettings.soc);
 
   checkingWarnings(chargeRate, 0, 0.8, chargeRateTolerance,
-      'Warning: Approaching lower chargeRate limit',
-      'Warning: Approaching upper chargeRate limit',
+      'chargeRateLow',
+      'chargeRateHigh',
       warningSettings.chargeRate);
 
   return !(
-    isOutOfRange(temperature, 0, 45, 'Temperature is out of range!') ||
-    isOutOfRange(soc, 20, 80, 'State of Charge is out of range!') ||
-    isOutOfRange(chargeRate, 0, 0.8, 'Charge rate is out of range!')
+    isOutOfRange(temperature, 0, 45, 'tempOut') ||
+    isOutOfRange(soc, 20, 80, 'socOut') ||
+    isOutOfRange(chargeRate, 0, 0.8, 'chargerateOut')
   );
 }
 

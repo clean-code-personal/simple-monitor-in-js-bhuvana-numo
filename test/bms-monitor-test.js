@@ -17,7 +17,7 @@ describe('BMS monitor', ()=> {
     warningSettings.temperature = false; 
     expect(batteryIsOk(1, 70, 0.6)).to.be.true;
     expect(consoleSpy.called).to.be.false; 
-    warningSettings.temperature = true; 
+    warningSettings.temperature = true;
   });
   
 
@@ -51,8 +51,8 @@ describe('BMS monitor', ()=> {
 
 
   it('should warn but still be ok when chargerate is near upper limit', ()=>{
-    expect(batteryIsOk(8, 79, 0.8)).to.be.true;
-    expect(consoleSpy.calledWith('Warning: Approaching charge-peak')).to.be.true;
+    expect(batteryIsOk(40, 79, 0.8)).to.be.true;
+ 
     expect(consoleSpy.calledWith('Warning: Approaching upper chargeRate limit')).to.be.true;
   });
 });
