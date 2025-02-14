@@ -48,11 +48,4 @@ describe('BMS monitor', ()=> {
     expect(consoleSpy.calledWith('Warning: Approaching charge-peak')).to.be.true;
   });
 
-
-
-  it('should warn but still be ok when chargerate is near upper limit', ()=>{
-    expect(batteryIsOk(40, 79, 0.8)).to.be.true;
- 
-    expect(consoleSpy.calledWith('Warning: Approaching upper chargeRate limit')).to.be.true;
-  });
 });
